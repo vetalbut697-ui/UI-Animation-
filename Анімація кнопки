@@ -1,0 +1,48 @@
+local button = script.Parent
+local TS = game:GetService("TweenService")
+local uiScale = button:WaitForChild("UIScale") -- Працюємо з ним, а не з Size!
+
+-- Налаштування часу анімацій
+local info = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+local infoFast = TweenInfo.new(0.05, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+-- Кольори
+local greyColor = Color3.fromRGB(127, 140, 141)
+local greenColor = Color3.fromRGB(46, 204, 113)
+local darkGreenColor = Color3.fromRGB(39, 174, 96)
+
+-- СТВОРЮЄМО ТВІНИ (Тепер ми міняємо властивість Scale у об'єкта uiScale!)
+-- А колір міняємо у самої кнопки (button)
+
+local hoverTween = TS:Create(uiScale, info, {Scale = 1.15}) -- Збільшення на 15%
+local hoverColorTween = TS:Create(button, info, {BackgroundColor3 = greenColor})
+
+local clickTween = TS:Create(uiScale, infoFast, {Scale = 0.9}) -- Стиснення до 90%
+local clickColorTween = TS:Create(button, infoFast, {BackgroundColor3 = darkGreenColor})
+
+local resetTween = TS:Create(uiScale, info, {Scale = 1.0}) -- Повернення до 100%
+local resetColorTween = TS:Create(button, info, {BackgroundColor3 = greyColor})
+
+-- ПОДІЇ МИШКИ
+button.MouseEnter:Connect(function()
+	hoverTween:Play()
+	hoverColorTween:Play()
+end)
+
+button.MouseLeave:Connect(function()
+	resetTween:Play()
+	resetColorTween:Play()
+end)
+
+button.MouseButton1Down:Connect(function()
+	clickTween:Play()
+	clickColorTween:Play()
+
+	task.wait(0.1) -- Невелика пауза, поки кнопка затиснута
+
+	-- Якщо мишка все ще на кнопці, повертаємо стан наведення
+	if button:IsHovered() then
+		hoverTween:Play()
+		hoverColorTween:Play()
+	end
+end)
