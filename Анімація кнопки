@@ -1,0 +1,29 @@
+local button = script.Parent
+local TS = game:GetService("TweenService")
+
+-- 1. Налаштування анімації (як у тебе, тільки додамо плавну Swing/Quad)
+local info = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+-- 2. ЗАПАМ'ЯТОВУЄМО ОРИГІНАЛЬНИЙ РОЗМІР (це залізне правило)
+local originalSize = button.Size
+
+-- 3. РАХУЄМО НОВИЙ РОЗМІР (множимо старі Scale та Offset на 1.2)
+local largeSize = UDim2.new(
+	originalSize.X.Scale * 1.2,
+	originalSize.X.Offset * 1.2,
+	originalSize.Y.Scale * 1.2,
+	originalSize.Y.Offset * 1.2
+)
+
+-- 4. СТВОРЮЄМО ДВА ТВІНИ: один на збільшення, другий на повернення назад
+local sizeUpTween = TS:Create(button, info, {Size = largeSize})
+local sizeDownTween = TS:Create(button, info, {Size = originalSize})
+
+-- 5. ПІДКЛЮЧАЄМО ПОДІЇ МИШКИ
+button.MouseEnter:Connect(function()
+	sizeUpTween:Play() -- Плавне збільшення при наведенні
+end)
+
+button.MouseLeave:Connect(function()
+	sizeDownTween:Play() -- Плавне повернення назад, коли мишка йде геть
+end)
