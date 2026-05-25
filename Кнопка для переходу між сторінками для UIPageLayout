@@ -1,0 +1,14 @@
+--Для повернення на минулусторінку
+local button = script.Parent
+local pager = script.Parent.Parent.Parent.UIPageLayout
+
+button.MouseButton1Click:Connect(function()
+	pager:Previous()--на попередню сторінку
+end)
+--Для переходу на наступну сторінку
+local button = script.Parent
+local pager = script.Parent.Parent.Parent.UIPageLayout
+
+button.MouseButton1Click:Connect(function()
+	pager:Next()-- на наступну сторінку
+end)
